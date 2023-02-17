@@ -1,0 +1,37 @@
+//Code can be used to book a community room from Google Forms and to create an event in Google Calendar. Add this function on "From spreadsheet - On form submit"
+
+function createCalendarEvent(event) {
+  let email = event.values[1];
+  let booking_name = event.values[2];
+  let unit_number = event.values[3];
+  let event_date = event.values[4];
+  let start_time = event.values[5];
+  let end_time = event.values[6];
+  let deposit_accepted = event.values[7];
+  let fee_accepted = event.values[8];
+  let photo_id_link = event.values[9];
+  let liquor_served = event.values[10];
+  let number_attend = event.values[12];
+  let start_date_time = new Date(event_date + ' ' + start_time);
+  let end_date_time = new Date(event_date + ' ' + end_time);
+  let title = booking_name + ' Unit# ' + unit_number;
+  let phone_number = event.values[13]
+  var description = 'Resident: ' + booking_name + ' from Unit# ' + unit_number + ', total  have answered to deposit (' + deposit_accepted + '), have answered to fee (' + fee_accepted + '), ' + 'Photo ID Link (' + photo_id_link + '), liquor served at event (' + liquor_served + ') ' ;
+
+  if (liquor_served == 'Yes'){
+    let liquor_bylaw_accepted = event.values[11];
+    description = description + ', strata liquor bylaw accepted (' + liquor_bylaw_accepted + ')' ;
+  }
+
+  description = description + ', Number of people attending event (' + number_attend + '), Contact Email: (' + email + ') Phone: (' + phone_number + ')'
+  var location = 'Club Zail'
+
+  var calendar = CalendarApp.getCalendarById('28707a3dec9922f60a79e88eea78b63bdb2e1320dd56927b82ce792dc180aaeb@group.calendar.google.com');
+
+  
+  var event = calendar.createEvent(title, start_date_time, end_date_time, {
+    location: location,
+    description: description
+  });
+
+}
